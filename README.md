@@ -1,71 +1,194 @@
-#   FORMAL LANGUAGES AND COMPILERS - Parser Implementation
 
-Group Members:
--   Erick Guerrero
--   David Ortiz
--   Anyela Jimenez
+# Grammar Parser - LL(1) and SLR(1) Analyzer
 
-##  Implementation Details
+## 📘 Description  
+A Python-based tool developed for the *Formal Languages and Compilers* course (*ST0270 / SI2002*). This tool implements both **LL(1)** and **SLR(1)** parsers for context-free grammars. It features colorful terminal output, detailed parsing steps, and comprehensive grammar analysis.
 
-Operating System:
--   Windows 11
+### 👥 Group Members  
+- Erick Guerrero  
+- David Ortiz  
+- Anyela Jimenez  
 
-Programming Language:
--   Python 3.12 (or the version you used)
+### 🖥️ Environment  
+- **Operating System:** Windows 11  
+- **Programming Language:** Python 3.12  
+- **Libraries Used:**  
+  - `tabulate` 0.8.9  
+  - `colorama` *(optional, for color output)*
 
-Tools and Libraries:
--   tabulate 0.8.9 (for pretty-printing tables)
+---
 
-##  Running the Implementation
+## ✨ Features
 
-1.  **Prerequisites:**
+### 🔍 Grammar Analysis  
+- Automatic detection of grammar type: **LL(1)**, **SLR(1)**, both, or neither  
+- Proper computation of **FIRST** and **FOLLOW** sets  
+- Detection of **left recursion**  
+- Detection of **conflicts** (e.g., shift/reduce in SLR(1))  
+- Grammar validation and **user-friendly feedback**
 
-    * Ensure you have Python 3.6 or later installed on your system.
-    * Install the `tabulate` library:
+### 📊 Parsing Capabilities  
+- **LL(1) Parser:**
+  - Generates parsing table
+  - Step-by-step derivation output
+  - Halts and warns on left recursion
+- **SLR(1) Parser:**
+  - Constructs LR(0) automaton
+  - Generates **ACTION** and **GOTO** tables
+  - Detects and flags shift/reduce conflicts
 
-        ```bash
-        pip install tabulate
-        ```
+### 🧑‍💻 User Interface  
+- Colored and bordered output using `colorama` and `tabulate`  
+- Interactive parser selection  
+- Clear diagnostics and table previews  
+- LaTeX export support (optional for future use)
 
-2.  **Execution:**
+---
 
-    * Save the provided Python code as a `.py` file (e.g., `parser.py`).
-    * Run the script from the command line:
+## ⚙️ Installation
 
-        ```bash
-        python parser.py
-        ```
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/grammar-parser.git
+cd grammar-parser
+```
 
-3.  **Input:**
+2. Install required packages:
+```bash
+pip install tabulate colorama
+```
 
-    * The program will first prompt you to enter the number of non-terminals in the grammar.
-    * Then, enter each production rule on a new line, in the format:
+---
 
-        `<nonterminal> -> <derivation alternatives separated by blank spaces>`
+## 🚀 Usage
 
-        * Alternatives for a non-terminal should be separated by spaces.
-        * Use "|" to separate alternatives within a derivation (e.g., `T -> T * F | F`).
-        * Represent the empty string (epsilon) as `e`.
-    * After entering the grammar, the program will output whether the grammar is LL(1), SLR(1), both, or neither.
-    * If the grammar is LL(1) or SLR(1) (or both), the program will then prompt you to enter strings to parse, one string per line.
-    * Enter the strings you want to parse. The program will output "yes" if the string is accepted by the grammar and "no" otherwise.
-    * To stop entering strings, enter an empty line.
-    * If the grammar is both LL(1) and SLR(1), the program will prompt you to select a parser ('T' for LL(1), 'B' for SLR(1), 'Q' for quit) before parsing strings.
+1. **Prepare the grammar file (`grammar.txt`)** in the following format:
+```
+<number of productions>
+Production 1
+Production 2
+...
+Production N
+<string to analyze 1>
+<string to analyze 2>
+...
+<string to analyze M>
+```
 
-##  Areas for Improvement
+📝 **Example:**
+```
+3
+S -> AB
+A -> aA | d
+B -> bBc | e
+adbc
+d
+a
+```
 
--   **Error Handling:** The LL(1) parser could benefit from more detailed error reporting. Instead of just indicating "no," it could pinpoint the location of the error in the input string and the expected symbol based on the parsing table.
--   **SLR(1) Conflict Resolution:** The current SLR(1) implementation detects conflicts (shift/reduce or reduce/reduce) but doesn't attempt to resolve them. Ideally, a more robust parser generator would incorporate conflict resolution strategies (e.g., using precedence and associativity rules).
--   **"Select a parser" Logic:** The program determines if the grammar is LL(1) or SLR(1), but the menu logic for explicitly selecting a parser ('T', 'B', 'Q') as outlined in the assignment is not fully implemented.
--   **Output Format:** While generally correct, the output format could be made to strictly adhere to all the examples provided in the assignment description, ensuring consistency in all scenarios.
+2. **Run the analyzer:**
+```bash
+python Main.py grammar.txt
+```
 
-##  Challenges with SLR(1) Implementation
+3. **Select the parsing strategy:**
+- `T`: Use **LL(1)** parser
+- `B`: Use **SLR(1)** parser
+- `Q`: Quit the program
 
--   The SLR(1) implementation correctly builds the parsing tables and detects conflicts. However, it does not proceed to parse input strings *if conflicts are detected*. SLR(1) parsers are designed to handle a larger class of grammars than LL(1), but conflicts indicate ambiguity that the basic SLR(1) algorithm cannot resolve without further guidance.
--   In our implementation, if `build_slr_table` identifies conflicts, the `slr_parse` function might not be reliably used, or its results might be incorrect for some inputs. To fully "make it work," conflict resolution strategies need to be added to the table construction.
--   The primary reason it "doesn't fully work" for all SLR(1) grammars is the *lack of conflict resolution*, not an error in the table building itself.
+---
 
-##  Files Included
+## 📁 File Structure
+```
+project/
+├── Main.py             # Program entry point and CLI
+├── F.py                # LL(1) parser module
+├── S.py                # SLR(1) parser module
+├── grammar_utils.py    # Grammar processing and set computations
+├── table_utils.py      # Table rendering helpers
+├── grammar.txt         # Input grammar and strings file
+└── README.md           # Project documentation
+```
 
--   `parser.py` - The Python script containing the parser implementation.
--   `README.md` - This file.
+---
+
+## 🧪 Sample Output
+
+### Grammar Analysis
+```
+✓ Grammar is LL(1) - No conflicts found
+✓ Grammar is SLR(1) - No conflicts found
+
+═══════════════════════════════════════
+ Grammar is both LL(1) and SLR(1) 
+═══════════════════════════════════════
+```
+
+### Parsing Result
+```
+╔════════════════════╗
+║✓ Result: YES      ║
+║  Input Accepted   ║
+╚════════════════════╝
+```
+
+---
+
+## 🧩 Problems Encountered and Solutions
+
+### 1. Left Recursion
+- **Problem:** Causes infinite loops in LL(1) parsing.
+- **Solution:** Implemented detection. Program halts LL(1) parsing and warns user.
+
+### 2. Incorrect FIRST and FOLLOW
+- **Problem:** `ε` (`e`) was not propagated properly.
+- **Solution:** Fixed computation to handle `e` correctly.
+
+### 3. Shift/Reduce Conflicts
+- **Problem:** Conflicts in SLR(1) `action` table.
+- **Solution:** Conflicts are detected and flagged. Parsing is not allowed until fixed.
+
+### 4. Table Construction Errors
+- **Problem:** Uninitialized structures caused runtime errors.
+- **Solution:** Improved initialization and added debug tools.
+
+### 5. Invalid Grammars
+- **Problem:** Some grammars were ambiguous or not suitable for LL(1)/SLR(1).
+- **Solution:** Program classifies the grammar and prevents invalid analysis.
+
+---
+
+## ✅ Requirements
+- Python 3.8+
+- `tabulate`
+- `colorama` (optional but recommended)
+
+---
+
+## ⚠️ Limitations
+- Only supports LL(1) and SLR(1) parsing
+- Grammar must be formatted correctly in `grammar.txt`
+- Conflict resolution strategies (e.g., operator precedence) are not implemented
+- Ambiguous grammars are not supported
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository  
+2. Create your feature branch:  
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Commit your changes:  
+   ```bash
+   git commit -m "Add YourFeature"
+   ```
+4. Push and open a Pull Request.
+
+---
+
+## 📄 License
+MIT License. See [LICENSE](LICENSE) for more information.
+
+---
