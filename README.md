@@ -41,22 +41,7 @@ A Python-based tool developed for the *Formal Languages and Compilers* course (*
 - Colored and bordered output using `colorama` and `tabulate`  
 - Interactive parser selection  
 - Clear diagnostics and table previews  
-- LaTeX export support (optional for future use)
-
 ---
-
-## ⚙️ Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/grammar-parser.git
-cd grammar-parser
-```
-
-2. Install required packages:
-```bash
-pip install tabulate colorama
-```
 
 ---
 
