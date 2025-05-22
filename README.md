@@ -157,17 +157,3 @@ project/
 - Ambiguous grammars are not supported
 
 ---
-
-## 🤝 Contributing
-
-1. Fork the repository  
-2. Create your feature branch:  
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-3. Commit your changes:  
-   ```bash
-   git commit -m "Add YourFeature"
-   ```
-4. Push and open a Pull Request.
-
